@@ -85,8 +85,8 @@ def main():
                 outputs_softmax = nn.functional.log_softmax(outputs, dim=2)
                 pred_length = torch.LongTensor([outputs_softmax.size(0)] * BATCH_SIZE)
                 target_length = torch.tensor([len(arr) for arr in y])
-                loss = criterion(outputs_softmax, y, pred_length, target_length, reduction='sum')
-                test_loss += loss.item()
+                loss = criterion(outputs_softmax, y, pred_length, target_length,)
+                test_loss += torch.sum(loss.item())
             
             print(f'\n[EPOCH {epoch + 1}] test loss: {loss / len(test_dataloader)}\n')
 
