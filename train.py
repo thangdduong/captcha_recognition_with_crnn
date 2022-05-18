@@ -41,6 +41,9 @@ def main():
     test_dataloader = DataLoader(test_dataset, batch_size=BATCH_SIZE)
 
     network = CRNN(img_size=IMG_SIZE, vocab_size=train_dataset.vocab_size)
+    if torch.cuda.is_available():
+        network.cuda()
+        
     criterion = nn.CTCLoss(blank=train_dataset.vocab_size-1)
     optimizer = optim.SGD(network.parameters(), lr=LR, momentum=MOMENTUM)
 
