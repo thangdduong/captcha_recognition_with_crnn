@@ -32,7 +32,7 @@ TEST_DIR = os.path.join(DATASET_DIR, 'test')
 
 
 def main():
-    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
     train_dataset = CaptchaDataset(TRAIN_DIR, img_size=IMG_SIZE[1:])
     test_dataset = CaptchaDataset(TEST_DIR, img_size=IMG_SIZE[1:])
