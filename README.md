@@ -1,4 +1,4 @@
-# CAPTCHA RECOGNITION USING CRNN
+# Captcha Recognition using CRNN
 ## Description
 This repo aims at using CRNN to build a captcha recognizer. The CRNN model is implemented in PyTorch.
 
