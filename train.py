@@ -45,7 +45,8 @@ def main():
     optimizer = optim.SGD(network.parameters(), lr=LR, momentum=MOMENTUM)
 
     for epoch in tqdm(range(EPOCHS)):
-        running_loss = 0.0
+        training_loss = 0.0
+        network.train()
         for index, sample in enumerate(train_dataloader, 0):
             X, y = sample
 
@@ -63,11 +64,29 @@ def main():
             loss = criterion(outputs_softmax, y, pred_length, target_length)
             loss.backward()
             optimizer.step()
-            running_loss += loss.item()
+            training_loss += loss.item()
 
             if index % BATCH_SIZE == 0:
                 print()
-                print(f'[EPOCH {epoch + 1}, {index + 1}] loss: {running_loss / BATCH_SIZE}')
+                print(f'[EPOCH {epoch + 1}, {index + 1}] train loss: {training_loss / BATCH_SIZE}')
+
+        network.eval()
+        test_loss = 0.0
+        with torch.no_grad():
+            for index, sample in enumerate(test_dataloader):
+                X, y = sample
+                X = X.to(device)
+                y = y.to(device)
+                
+                outputs = network(X)
+                outputs_softmax = nn.functional.log_softmax(outputs, dim=2)
+                pred_length = torch.LongTensor([outputs_softmax.size(0)] * BATCH_SIZE)
+                target_length = torch.tensor([len(arr) for arr in y])
+                loss = criterion(outputs_softmax, y, pred_length, target_length, reduction='sum')
+                test_loss += loss.item()
+            
+            print(f'\n[EPOCH {epoch + 1}] test loss: {loss / len(test_dataloader)}\n')
+
 
     print('Finished Training')
     print('Saving model...')
