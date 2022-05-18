@@ -43,7 +43,7 @@ def main():
     network = CRNN(img_size=IMG_SIZE, vocab_size=train_dataset.vocab_size)
     if torch.cuda.is_available():
         network.cuda()
-        
+
     criterion = nn.CTCLoss(blank=train_dataset.vocab_size-1)
     optimizer = optim.SGD(network.parameters(), lr=LR, momentum=MOMENTUM)
 
@@ -63,6 +63,9 @@ def main():
 
             pred_length = torch.LongTensor([outputs_softmax.size(0)] * BATCH_SIZE)
             target_length = torch.tensor([len(arr) for arr in y])
+
+            print(pred_length)
+            print(target_length)
 
             loss = criterion(outputs_softmax, y, pred_length, target_length)
             loss.backward()
