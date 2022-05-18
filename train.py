@@ -50,7 +50,7 @@ def main():
     for epoch in tqdm(range(EPOCHS)):
         training_loss = 0.0
         network.train()
-        for index, sample in enumerate(train_dataloader, 0):
+        for index, sample in enumerate(train_dataloader):
             X, y = sample
 
             X = X.to(device)
