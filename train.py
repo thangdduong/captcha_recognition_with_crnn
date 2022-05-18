@@ -83,7 +83,7 @@ def main():
                 
                 outputs = network(X)
                 outputs_softmax = nn.functional.log_softmax(outputs, dim=2)
-                pred_length = torch.LongTensor([outputs_softmax.size(0)] * BATCH_SIZE)
+                pred_length = torch.LongTensor([outputs_softmax.size(0)] * outputs_softmax.size(1))
                 target_length = torch.tensor([len(arr) for arr in y])
                 loss = criterion(outputs_softmax, y, pred_length, target_length,)
                 test_loss += loss.item()
