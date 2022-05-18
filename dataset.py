@@ -26,12 +26,10 @@ class CaptchaDataset(Dataset):
 
         label = self.all_imgs[index].split(".")[0]
         encode_label = [self.char2num[c] for c in label]
-        y_length = [len(encode_label)]
 
         y = torch.LongTensor(encode_label)
-        y_length = torch.LongTensor(y_length)
         
-        return X, y, y_length
+        return X, y
 
     def __len__(self):
 
